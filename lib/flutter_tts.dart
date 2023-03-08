@@ -341,6 +341,8 @@ class FlutterTts {
   /// ***Android supported only***
   Future<dynamic> setQueueMode(int queueMode) async =>
       await _channel.invokeMethod('setQueueMode', queueMode);
+    
+  Future<dynamic> canUse() async => await _channel.invokeMethod('canUse');
 
   void setStartHandler(VoidCallback callback) {
     startHandler = callback;
