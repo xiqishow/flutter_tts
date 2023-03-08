@@ -36,14 +36,19 @@ class FlutterTtsPlugin {
   List<dynamic>? voices;
   List<String?>? languages;
   Timer? t;
+  bool available = true;
 
   FlutterTtsPlugin() {
-    utterance = new js.JsObject(
-        js.context["SpeechSynthesisUtterance"] as js.JsFunction, [""]);
-    synth = new js.JsObject.fromBrowserObject(
-        js.context["speechSynthesis"] as js.JsObject);
+    if (js.context["SpeechSynthesisUtterance"] != null) {
+      utterance = new js.JsObject(
+          js.context["SpeechSynthesisUtterance"] as js.JsFunction, [""]);
+      synth = new js.JsObject.fromBrowserObject(
+          js.context["speechSynthesis"] as js.JsObject);
 
-    _listeners();
+      _listeners();
+    } else {
+      available = false;
+    }
   }
 
   void _listeners() {
@@ -144,6 +149,8 @@ class FlutterTtsPlugin {
       case 'isLanguageAvailable':
         final lang = call.arguments as String?;
         return _isLanguageAvailable(lang);
+      case 'available':
+        return available ? 1 : 0;
       default:
         throw PlatformException(
             code: 'Unimplemented',
