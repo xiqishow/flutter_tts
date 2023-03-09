@@ -172,11 +172,8 @@ class FlutterTtsPlugin {
 
   void _stop() {
     if (ttsState != TtsState.stopped) {
-      synth.callMethod('pause');
-      Future.delayed(Duration(milliseconds: 500), () {
         synth.callMethod('cancel');
         ttsState = TtsState.stopped;
-      });
     }
   }
 
